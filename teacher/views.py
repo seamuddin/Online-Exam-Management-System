@@ -94,11 +94,15 @@ def teacher_add_question_view(request):
     questionForm=QFORM.QuestionForm()
     if request.method=='POST':
         questionForm=QFORM.QuestionForm(request.POST)
+
         if questionForm.is_valid():
+
             question=questionForm.save(commit=False)
             course=QMODEL.Course.objects.get(id=request.POST.get('courseID'))
             question.course=course
-            question.save()       
+            questiontype = request.POST.get('questiont')
+            question.questiontype=questiontype
+            question.save()
         else:
             print("form is invalid")
         return HttpResponseRedirect('/teacher/teacher-view-question')

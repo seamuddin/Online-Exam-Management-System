@@ -13,7 +13,7 @@ from student import models as SMODEL
 from teacher import forms as TFORM
 from student import forms as SFORM
 from django.contrib.auth.models import User
-
+from exam import models as QMODEL
 
 
 def home_view(request):
@@ -292,5 +292,59 @@ def contactus_view(request):
             send_mail(str(name)+' || '+str(email),message,settings.EMAIL_HOST_USER, settings.EMAIL_RECEIVING_USER, fail_silently = False)
             return render(request, 'exam/contactussuccess.html')
     return render(request, 'exam/contactus.html', {'form':sub})
+
+
+
+@login_required(login_url='studentlogin')
+def test_exam(request,pk):
+    if request.method == 'POST':
+        import pdb; pdb.set_trace()
+        data = request.POST
+        datadict = dict(data)
+        student = models.Student.objects.get(user_id=request.user.id)
+        course = QMODEL.Course.objects.get(id=pk)
+        examattend = QMODEL.Examattend()
+        examattend.student = student
+        examattend.course = course
+        examattend.save()
+        for k in datadict:
+            if 'csrfmiddlewaretoken' not in k:
+                value = datadict.get(k)[0]
+                key = k.split('&')
+                datalist = list(key)
+                questiontype = datalist[1]
+                if questiontype != 2:
+                    questionid = datalist[0]
+                    course_id = datalist[2]
+                    answer = value
+                    status = 1
+                    student1 = models.Student.objects.get(user_id=request.user.id)
+                    course1 = QMODEL.Course.objects.get(id=course_id)
+                    examans = QMODEL.QuestionAns()
+                    examans.answer = answer
+                    examans.status = status
+                    examans.course = QMODEL.Course.objects.get(id=course_id)
+                    examans.question = QMODEL.Question.objects.get(id=questionid)
+                    examans.questiontype = questiontype
+                    examans.student = models.Student.objects.get(user_id=request.user.id)
+                    examans.save()
+
+
+
+
+
+
+
+                print(key)
+        return HttpResponseRedirect('/student/view-result')
+
+
+    else:
+        course = QMODEL.Course.objects.get(id=pk)
+        questions = QMODEL.Question.objects.all().filter(course=course)
+        response = render(request, 'exam/test.html', {'course': course, 'questions': questions})
+        response.set_cookie('course_id', course.id)
+
+    return response
 
 

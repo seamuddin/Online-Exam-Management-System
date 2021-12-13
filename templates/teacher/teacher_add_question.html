@@ -1,3 +1,4 @@
+
 {% extends 'teacher/teacherbase.html' %}
 {% load widget_tweaks %}
 {% block content %}
@@ -6,15 +7,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
+
        <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
   a:link {
         text-decoration: none;
       }
-    
+
   </style>
 </head>
 <h2 style="text-align:center;">Add Question</h2>
@@ -22,33 +24,60 @@
     {%csrf_token%}
     <div class="form-group">
         <label for="question">Course</label>
+
       {% render_field questionForm.courseID|attr:'required:true' class="form-control"  %}
         <br>
 
+         <label for="question">Question Type</label>
+
+      {% render_field questionForm.questiont class="form-control" id="typesel" %}
+        <br>
+
       <label for="question">Question</label>
-      {% render_field questionForm.question|attr:'required:true' class="form-control" placeholder="Example: What is the relation calculus?" %}
+      {% render_field questionForm.question class="form-control" placeholder="Example: What is the relation calculus?" %}
         <br>
       <label for="question_number">Marks</label>
-      {% render_field questionForm.marks|attr:'required:true' class="form-control" placeholder="Example: 5" %}
+      {% render_field questionForm.marks class="form-control" placeholder="Example: 5" %}
         <br>
+
+        <div class="containerr" id="mcqsec">
       <label for="option1">Option 1</label>
-      {% render_field questionForm.option1|attr:'required:true' class="form-control" placeholder="Example: It is a kind of procedural language" %}
+      {% render_field questionForm.option1 class="form-control" placeholder="Example: It is a kind of procedural language" %}
         <br>
       <label for="option2">Option 2</label>
-      {% render_field questionForm.option2|attr:'required:true' class="form-control" placeholder="Example: It is a non-procedural language" %}
+      {% render_field questionForm.option2 class="form-control" placeholder="Example: It is a non-procedural language" %}
         <br>
       <label for="option3">Option 3</label>
-      {% render_field questionForm.option3|attr:'required:true' class="form-control" placeholder="Example: It is a high-level language" %}
+      {% render_field questionForm.option3 class="form-control" placeholder="Example: It is a high-level language" %}
         <br>
       <label for="option4">Option 4</label>
-      {% render_field questionForm.option4|attr:'required:true' class="form-control" placeholder="Example: It is Data Definition language" %}
+      {% render_field questionForm.option4 class="form-control" placeholder="Example: It is Data Definition language" %}
         <br>
       <label for="answer">Correct Answer</label>
-      {% render_field questionForm.answer|attr:'required:true' class="form-control" %}
+      {% render_field questionForm.answer class="form-control" %}
+        </div>
+
+
     </div>
-    
+
 
     <button type="submit" class="btn btn-success" style="border-radius: 0%;">Submit Question</button>
   </form>
 <br><br><br>
+    <script>
+
+
+    $("#typesel").change(function () {
+
+        var typeselvalue = $("#typesel option:selected").val();
+    if (typeselvalue == 0)
+    {
+        $('#mcqsec').show()
+    }
+    else {
+        $('#mcqsec').hide()
+    }
+});
+    </script>
+
 {% endblock content %}

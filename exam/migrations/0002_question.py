@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('option4', models.CharField(max_length=200)),
                 ('answer', models.CharField(choices=[('Option1', 'Option1'), ('Option2', 'Option2'), ('Option3', 'Option3'), ('Option4', 'Option4')], max_length=200)),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='exam.Course')),
+                ('type', models.CharField(max_length=200)),
             ],
         ),
     ]
