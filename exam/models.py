@@ -41,4 +41,6 @@ class QuestionAns(models.Model):
     status = models.CharField(max_length=200)
     marks = models.CharField(max_length=200)
     questiontype = models.CharField(max_length=200, default=0)
+    uploadedFile = models.FileField(blank=True,upload_to="Uploaded Files/", )
+    dateTimeOfUpload = models.DateTimeField(auto_now=True)
 

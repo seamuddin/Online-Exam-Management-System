@@ -69,13 +69,75 @@ def take_exam_view(request,pk):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def start_exam_view(request,pk):
-    course=QMODEL.Course.objects.get(id=pk)
-    questions=QMODEL.Question.objects.all().filter(course=course)
-    if request.method=='POST':
-        pass
-    response= render(request,'student/start_exam.html',{'course':course,'questions':questions})
-    response.set_cookie('course_id',course.id)
+
+    if request.method == 'POST':
+        data = request.POST
+        datadict = dict(data)
+        student = models.Student.objects.get(user_id=request.user.id)
+        course = QMODEL.Course.objects.get(id=pk)
+        examattend = QMODEL.Examattend()
+        examattend.student = student
+        examattend.course = course
+        examattend.save()
+
+        for k in datadict:
+            if 'csrfmiddlewaretoken' not in k:
+                value = datadict.get(k)[0]
+                keymain = k
+                key = k.split('_')
+                datalist = list(key)
+                questiontype = datalist[1]
+                if questiontype != '2':
+                    questionid = datalist[0]
+                    course_id = datalist[2]
+                    answer = value
+                    status = 1
+                    student1 = models.Student.objects.get(user_id=request.user.id)
+                    course1 = QMODEL.Course.objects.get(id=course_id)
+                    examans = QMODEL.QuestionAns()
+                    examans.answer = answer
+                    examans.status = status
+                    examans.course = QMODEL.Course.objects.get(id=course_id)
+                    examans.question = QMODEL.Question.objects.get(id=questionid)
+                    examans.questiontype = questiontype
+                    examans.student = models.Student.objects.get(user_id=request.user.id)
+                    examans.save()
+
+        if request.FILES:
+            data2 = request.FILES
+            datadict2 = dict(data2)
+
+            for d in datadict2:
+                data_key = d.split('_')
+                datakeylist = list(data_key)
+                fileqtype = datakeylist[1]
+                questionid = datakeylist[0]
+                course_id = datakeylist[2]
+                status = 1
+                examans = QMODEL.QuestionAns()
+                examans.status = status
+                examans.course = QMODEL.Course.objects.get(id=course_id)
+                examans.question = QMODEL.Question.objects.get(id=questionid)
+                examans.questiontype = fileqtype
+                examans.student = models.Student.objects.get(user_id=request.user.id)
+                examans.uploadedFile = request.FILES[d]
+                examans.save()
+
+
+        return HttpResponseRedirect('/student/view-result')
+
+
+    else:
+        course = QMODEL.Course.objects.get(id=pk)
+        questions = QMODEL.Question.objects.all().filter(course=course)
+        student = models.Student.objects.get(user_id=request.user.id)
+        attendexam = QMODEL.Examattend.objects.all().filter(student=student).first()
+
+        response = render(request, 'exam/test.html', {'course': course, 'questions': questions, 'status':attendexam})
+        response.set_cookie('course_id', course.id)
+
     return response
+
 
 
 @login_required(login_url='studentlogin')

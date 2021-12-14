@@ -10,64 +10,81 @@
 
 </head>
 
+        {% if status.status != '0' %}
+            {{ status.status }}
 
-<div class="jumbotron my-4">
-
-  <form class="form" autocomplete="off" onsubmit="return saveAns()" method="post" >
-    <h1 style="display: none">{% csrf_token %}</h1>
-    <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
-    {% for q in questions%}
-    <h3 class="text-danger">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
+        <div class="jumbotron my-4">
 
 
 
-            {% if q.questiontype == "0" %}
+          <form class="form" autocomplete="off" onsubmit="return saveAns()" method="post" enctype="multipart/form-data">
+            <h1 style="display: none">{% csrf_token %}</h1>
+            <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
+            {% for q in questions%}
+            <h3 class="text-danger">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
 
 
-              <div class="form-check mx-4">
-                <input class="form-check-input" type="radio" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}" id="{{q.option1}}" value="Option1">
-                <label class="form-check-label" for="option1">
-                  {{q.option1}}
-                </label>
-              </div>
+
+                    {% if q.questiontype == "0" %}
 
 
-              <div class="form-check mx-4">
-                <input class="form-check-input" type="radio" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}" id="{{q.option2}}" value="Option2">
-                <label class="form-check-label" for="option2">
-                  {{q.option2}}
-                </label>
-              </div>
+
+                      <div class="form-check mx-4">
+                        <input class="form-check-input" type="radio" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}" id="{{q.option1}}" value="Option1">
+                        <label class="form-check-label" for="option1">
+                          {{q.option1}}
+                        </label>
+                      </div>
 
 
-              <div class="form-check mx-4">
-                <input class="form-check-input" type="radio" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}" id="{{q.option3}}" value="Option3">
-                <label class="form-check-label" for="option3">
-                  {{q.option3}}
-                </label>
-              </div>
+                      <div class="form-check mx-4">
+                        <input class="form-check-input" type="radio" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}" id="{{q.option2}}" value="Option2">
+                        <label class="form-check-label" for="option2">
+                          {{q.option2}}
+                        </label>
+                      </div>
 
 
-              <div class="form-check mx-4">
-                <input class="form-check-input" type="radio" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}" id="{{q.option4}}" value="Option4">
-                <label class="form-check-label" for="option4">
-                  {{q.option4}}
-                </label>
-              </div>
-
-        {% elif q.questiontype == "1" %}
-
-            <input class="form-control" type="text" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}">
-        {% elif q.questiontype == "2" %}
-             <input class="form-control" type="file" name="{{ q.id }}&{{ q.questiontype }}&{{ course.id }}">
-
-        {% endif %}
+                      <div class="form-check mx-4">
+                        <input class="form-check-input" type="radio" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}" id="{{q.option3}}" value="Option3">
+                        <label class="form-check-label" for="option3">
+                          {{q.option3}}
+                        </label>
+                      </div>
 
 
-        {% endfor %}
-        <input class="btn btn-success btn-lg" style="border-radius: 0%; margin-top: 20px;"  type="submit" value="Submit Answers">
-    </form>
-  </div>
+                      <div class="form-check mx-4">
+                        <input class="form-check-input" type="radio" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}" id="{{q.option4}}" value="Option4">
+                        <label class="form-check-label" for="option4">
+                          {{q.option4}}
+                        </label>
+                      </div>
+
+                {% elif q.questiontype == "1" %}
+
+                    <input class="form-control"  oncopy="return false" onpaste="return false" type="text" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}">
+                {% elif q.questiontype == "2" %}
+                     <input class="form-control" type="file" name="{{ q.id }}_{{ q.questiontype }}_{{ course.id }}">
+
+                {% endif %}
+
+
+                {% endfor %}
+                <input class="btn btn-success btn-lg" style="border-radius: 0%; margin-top: 20px;"  type="submit" value="Submit Answers">
+            </form>
+          </div>
+
+  {% else %}
+
+
+
+            <div class="alert alert-danger" role="alert">
+              You are already attend the exam !!!!!!!!!!!!!!!!
+            </div>
+
+  {% endif %}
+
+
 
 
 <script>
