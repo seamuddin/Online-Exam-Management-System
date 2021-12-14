@@ -359,7 +359,8 @@ def test_exam(request,pk):
         course = QMODEL.Course.objects.get(id=pk)
         questions = QMODEL.Question.objects.all().filter(course=course)
         student = models.Student.objects.get(user_id=request.user.id)
-        attendexam = QMODEL.Examattend.objects.all().filter(student=student).first()
+        attendexam = QMODEL.Examattend.objects.all().filter(student=student,course=course).first()
+        import pdb; pdb.set_trace()
 
         response = render(request, 'exam/test.html', {'course': course, 'questions': questions, 'status':attendexam})
         response.set_cookie('course_id', course.id)
