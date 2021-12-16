@@ -14,6 +14,8 @@ from teacher import forms as TFORM
 from student import forms as SFORM
 from django.contrib.auth.models import User
 from exam import models as QMODEL
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 
 def home_view(request):
@@ -294,10 +296,16 @@ def contactus_view(request):
     return render(request, 'exam/contactus.html', {'form':sub})
 
 
+def mail_test(request):
+
+    # EmailMessage('Subject', 'Body', to=['abdurroufcse46@gmail.com']).send()
+    #ssssend_mail('test email', 'hello world', to=['abdurroufcse46@gmail.com'])
+    send_mail('Online examination system', 'Hello , This a test mail from online-examination-system created by Mr.Mushfiq', 'onlineexamination2k20@gmail.com', ['hasanhasibul395@gmail.com'],
+             fail_silently=False)
+
 
 @login_required(login_url='studentlogin')
 def test_exam(request,pk):
-
     if request.method == 'POST':
         data = request.POST
         datadict = dict(data)
