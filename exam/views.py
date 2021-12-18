@@ -304,6 +304,10 @@ def mail_test(request):
              fail_silently=False)
 
 
+
+def forget_pass(request):
+    pass
+
 @login_required(login_url='studentlogin')
 def test_exam(request,pk):
     if request.method == 'POST':

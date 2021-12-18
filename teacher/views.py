@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import render,redirect,reverse
 from . import forms,models
 from django.db.models import Sum
@@ -21,8 +22,17 @@ def teacher_signup_view(request):
     userForm=forms.TeacherUserForm()
     teacherForm=forms.TeacherForm()
     mydict={'userForm':userForm,'teacherForm':teacherForm}
+    if (request.POST.get('email')):
+        email = request.POST.get('email')
+        send_mail__ = send_mail('Online examination system',
+                  'Hello , This a test mail from online-examination-system created by Mr.Mushfiq',
+                  'onlineexamination2k20@gmail.com', [email],
+                  fail_silently=False)
+        import pdb; pdb.set_trace()
+
     if request.method=='POST':
         userForm=forms.TeacherUserForm(request.POST)
+        import pdb; pdb.set_trace()
         teacherForm=forms.TeacherForm(request.POST,request.FILES)
         if userForm.is_valid() and teacherForm.is_valid():
             user=userForm.save()

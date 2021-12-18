@@ -52,7 +52,8 @@ urlpatterns = [
     path('view-question/<int:pk>', views.view_question_view,name='view-question'),
     path('delete-question/<int:pk>', views.delete_question_view,name='delete-question'),
     path('test/<int:pk>', views.test_exam,name='test'),
-    path('mail_test',views.mail_test, name='test')
+    path('mail_test',views.mail_test, name='test'),
+    path('forget_pass',views.forget_pass, name='test')
 
 
 ]
