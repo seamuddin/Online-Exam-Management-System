@@ -1,9 +1,11 @@
+from smtplib import SMTPException
+
 from django.core.mail import send_mail
 from django.shortcuts import render,redirect,reverse
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from datetime import date, timedelta
@@ -24,11 +26,17 @@ def teacher_signup_view(request):
     mydict={'userForm':userForm,'teacherForm':teacherForm}
     if (request.POST.get('email')):
         email = request.POST.get('email')
-        send_mail__ = send_mail('Online examination system',
-                  'Hello , This a test mail from online-examination-system created by Mr.Mushfiq',
-                  'onlineexamination2k20@gmail.com', [email],
-                  fail_silently=False)
-        import pdb; pdb.set_trace()
+
+        try:
+            send_mail('Online examination system','Hello , This a test mail from online-examination-system created by Mr.Mushfiq', 'onlineexamination2k20@gmail.com', [email])
+        except ValueError:
+
+           context1 = {
+            'error' : 'Please Fill with the valid mail'
+           }
+           return render(request,'teacher/teachersignup.html', context = context1)
+
+
 
     if request.method=='POST':
         userForm=forms.TeacherUserForm(request.POST)
