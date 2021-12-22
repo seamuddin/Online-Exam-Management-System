@@ -73,7 +73,6 @@ def is_teacher(user):
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_dashboard_view(request):
-    import pdb; pdb.set_trace()
     dict={
     
     'total_course':QMODEL.Course.objects.all().count(),
