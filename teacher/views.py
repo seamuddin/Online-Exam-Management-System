@@ -12,6 +12,7 @@ from datetime import date, timedelta
 from exam import models as QMODEL
 from student import models as SMODEL
 from exam import forms as QFORM
+import random
 
 
 #for showing signup/login button for teacher
@@ -24,33 +25,43 @@ def teacher_signup_view(request):
     userForm=forms.TeacherUserForm()
     teacherForm=forms.TeacherForm()
     mydict={'userForm':userForm,'teacherForm':teacherForm}
-    if (request.POST.get('email')):
-        email = request.POST.get('email')
-
-        try:
-            send_mail('Online examination system','Hello , This a test mail from online-examination-system created by Mr.Mushfiq', 'onlineexamination2k20@gmail.com', [email])
-        except ValueError:
-
-           context1 = {
-            'error' : 'Please Fill with the valid mail'
-           }
-           return render(request,'teacher/teachersignup.html', context = context1)
-
-
-
     if request.method=='POST':
         userForm=forms.TeacherUserForm(request.POST)
-        import pdb; pdb.set_trace()
         teacherForm=forms.TeacherForm(request.POST,request.FILES)
         if userForm.is_valid() and teacherForm.is_valid():
-            user=userForm.save()
+            user = userForm.save()
             user.set_password(user.password)
             user.save()
-            teacher=teacherForm.save(commit=False)
-            teacher.user=user
-            teacher.save()
-            my_teacher_group = Group.objects.get_or_create(name='TEACHER')
-            my_teacher_group[0].user_set.add(user)
+            teacher = teacherForm.save(commit=False)
+            teacher.user = user
+            if request.POST.get('email'):
+                email = request.POST.get('email')
+                randvalue = str(random.randint(20004, 200000000007))
+                randstr1 = 'Hello, Here is your verification code ' + randvalue
+                try:
+
+                    send_mail('Online examination system',
+                              randstr1,
+                              'onlineexamination2k20@gmail.com', [email])
+                    confirmemail = email
+
+
+                except ValueError:
+
+                    context1 = {
+                        'error': 'Please Fill with the valid mail'
+                    }
+                    mydict.update(context1)
+                    return render(request, 'teacher/teachersignup.html', context=mydict)
+                if confirmemail:
+                    teacher.verification = randvalue
+                    teacher.save()
+                    my_teacher_group = Group.objects.get_or_create(name='TEACHER')
+                    my_teacher_group[0].user_set.add(user)
+
+
+
+
         return HttpResponseRedirect('teacherlogin')
     return render(request,'teacher/teachersignup.html',context=mydict)
 
@@ -62,6 +73,7 @@ def is_teacher(user):
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_dashboard_view(request):
+    import pdb; pdb.set_trace()
     dict={
     
     'total_course':QMODEL.Course.objects.all().count(),

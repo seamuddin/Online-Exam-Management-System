@@ -9,6 +9,7 @@ class Teacher(models.Model):
     department = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20,null=False)
     status= models.BooleanField(default=False)
+    verification = models.CharField(max_length=20, default=0)
     verify_state = models.IntegerField(default=0)
     salary=models.PositiveIntegerField(null=True)
     @property
