@@ -134,7 +134,6 @@ def admin_view_pending_teacher_view(request):
 
 @login_required(login_url='adminlogin')
 def approve_teacher_view(request,pk):
-    import pdb; pdb.set_trace()
     teacher = TMODEL.Teacher.objects.get(id=pk)
     teacher.status = True
     teacher.save()

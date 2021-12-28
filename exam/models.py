@@ -3,6 +3,7 @@ from teacher import models as TMODEL
 from student.models import Student
 class Course(models.Model):
    course_name = models.CharField(max_length=50)
+   exam_type = models.CharField(max_length=50, default=0)
    question_number = models.PositiveIntegerField()
    total_marks = models.PositiveIntegerField()
    def __str__(self):
@@ -25,7 +26,7 @@ class QCourse(models.Model):
 
 class CourseWiseTeacher(models.Model):
     course = models.ForeignKey(QCourse, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(TMODEL.Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(TMODEL.Teacher, on_delete=models.CASCADE, null=True)
 
 
 class Question(models.Model):

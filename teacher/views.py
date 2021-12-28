@@ -84,7 +84,10 @@ def teacher_dashboard_view(request):
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_exam_view(request):
-    return render(request,'teacher/teacher_exam.html')
+    user_id = request.user.id
+    teacher = models.Teacher.objects.get(user_id=user_id)
+    cwt = QMODEL.CourseWiseTeacher.objects.all().filter(teacher = teacher.id)
+    return render(request,'teacher/teacher_exam.html',{'context' : cwt})
 
 
 @login_required(login_url='teacherlogin')
@@ -93,8 +96,10 @@ def teacher_add_exam_view(request):
     courseForm=QFORM.CourseForm()
     if request.method=='POST':
         courseForm=QFORM.CourseForm(request.POST)
-        if courseForm.is_valid():        
-            courseForm.save()
+        if courseForm.is_valid():
+            exam = courseForm.save(commit=False)
+            exam.exam_type = request.POST.get('exam_type')
+            exam.save()
         else:
             print("form is invalid")
         return HttpResponseRedirect('/teacher/teacher-view-exam')

@@ -22,6 +22,8 @@
 <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
     {%csrf_token%}
     <div class="form-group">
+        <label for="course_name">Exam Type</label>
+      {% render_field courseForm.exam_type class="form-control" placeholder="Example: Databases" %}
       <label for="course_name">Exam Name</label>
       {% render_field courseForm.course_name class="form-control" placeholder="Example: Databases" %}
 

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from . import models
+from exam import models as QMODEL
 
 class TeacherUserForm(forms.ModelForm):
     class Meta:
@@ -11,7 +12,8 @@ class TeacherUserForm(forms.ModelForm):
         }
 
 class TeacherForm(forms.ModelForm):
+    department =  forms.ModelChoiceField(queryset=QMODEL.Department.objects.all(), empty_label="Department Name",to_field_name="id")
     class Meta:
         model=models.Teacher
-        fields=['email','mobile','profile_pic','teacher_id','department']
+        fields=['email','mobile','profile_pic','teacher_id']
 

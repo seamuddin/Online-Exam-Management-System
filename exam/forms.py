@@ -10,7 +10,15 @@ class ContactusForm(forms.Form):
 class TeacherSalaryForm(forms.Form):
     salary=forms.IntegerField()
 
+exam_type =(
+    ("0", "Class Test"),
+    ("1", "Mid Term"),
+    ("2", "Final"),
+)
+
+
 class CourseForm(forms.ModelForm):
+    exam_type = forms.ChoiceField(choices=exam_type)
     class Meta:
         model=models.Course
         fields=['course_name','question_number','total_marks']
@@ -20,11 +28,6 @@ class QCourseForm(forms.ModelForm):
     class Meta:
         model=models.QCourse
         fields=['course_name','course_code']
-
-class DeptForm(forms.ModelForm):
-    class Meta:
-        model=models.Department
-        fields=['dept_name']
 
 class DeptForm(forms.ModelForm):
     class Meta:
