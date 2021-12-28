@@ -15,6 +15,29 @@ class CourseForm(forms.ModelForm):
         model=models.Course
         fields=['course_name','question_number','total_marks']
 
+class QCourseForm(forms.ModelForm):
+    dept_id = forms.ModelChoiceField(queryset=models.Department.objects.all(), empty_label="Department Name",to_field_name="id")
+    class Meta:
+        model=models.QCourse
+        fields=['course_name','course_code']
+
+class DeptForm(forms.ModelForm):
+    class Meta:
+        model=models.Department
+        fields=['dept_name']
+
+class DeptForm(forms.ModelForm):
+    class Meta:
+        model=models.Department
+        fields=['dept_name']
+
+class CWTForm(forms.ModelForm):
+    course_id = forms.ModelChoiceField(queryset=models.QCourse.objects.all(), empty_label="Course Name", to_field_name="id")
+    teacher_id = forms.ModelChoiceField(queryset=models.TMODEL.Teacher.objects.all(), empty_label="Teacher Name", to_field_name="id")
+    class Meta:
+        model=models.CourseWiseTeacher
+        fields=['course_id']
+
 
 DEMO_CHOICES =(
     ("0", "MCQ"),

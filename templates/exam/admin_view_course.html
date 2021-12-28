@@ -31,9 +31,8 @@
       <thead>
         <tr>
 
-          <th>Course</th>
-          <th>Total Question</th>
-          <th>Total Marks</th>
+          <th>Course Name</th>
+          <th>Department</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -41,9 +40,7 @@
       <tr>
 
         <td> {{t.course_name}}</td>
-        <td>{{t.question_number}}</td>
-        <td>{{t.total_marks}}</td>
-        
+        <td> {{t.course_dept_name}}</td>
         <td><a class="btn btn-danger btn-xs" style="border-radius: 0%;" href="{% url 'delete-course' t.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>
       {% endfor %}

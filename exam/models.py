@@ -1,5 +1,5 @@
 from django.db import models
-
+from teacher import models as TMODEL
 from student.models import Student
 class Course(models.Model):
    course_name = models.CharField(max_length=50)
@@ -7,6 +7,26 @@ class Course(models.Model):
    total_marks = models.PositiveIntegerField()
    def __str__(self):
         return self.course_name
+
+class Department(models.Model):
+    dept_name =  models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.dept_name
+
+class QCourse(models.Model):
+    course_name = models.CharField(max_length=100)
+    course_code = models.CharField(max_length=100)
+    course_dept = models.ForeignKey(Department,on_delete=models.CASCADE)
+    course_dept_name = models.CharField(max_length=100, default=0)
+
+    def __str__(self):
+        return self.course_name
+
+class CourseWiseTeacher(models.Model):
+    course = models.ForeignKey(QCourse, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(TMODEL.Teacher, on_delete=models.CASCADE)
+
 
 class Question(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE)

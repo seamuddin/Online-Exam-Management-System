@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from exam import models as QMODEL
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
+from django.forms.models import model_to_dict
 
 
 def home_view(request):
@@ -49,11 +50,6 @@ def afterlogin_view(request):
                     return render(request, 'teacher/teacher_wait_for_approval.html')
             else:
                 return render(request, 'teacher/verify.html')
-
-
-
-
-            import pdb; pdb.set_trace()
         accountapproval=TMODEL.Teacher.objects.all().filter(user_id=request.user.id,status=True,)
         if accountapproval:
             return redirect('teacher/teacher-dashboard')
@@ -79,8 +75,8 @@ def admin_dashboard_view(request):
     dict={
     'total_student':SMODEL.Student.objects.all().count(),
     'total_teacher':TMODEL.Teacher.objects.all().filter(status=True).count(),
-    'total_course':models.Course.objects.all().count(),
-    'total_question':models.Question.objects.all().count(),
+    'total_course':models.QCourse.objects.all().count(),
+    'total_dept':models.Department.objects.all().count(),
     }
     return render(request,'exam/admin_dashboard.html',context=dict)
 
@@ -138,18 +134,12 @@ def admin_view_pending_teacher_view(request):
 
 @login_required(login_url='adminlogin')
 def approve_teacher_view(request,pk):
-    teacherSalary=forms.TeacherSalaryForm()
-    if request.method=='POST':
-        teacherSalary=forms.TeacherSalaryForm(request.POST)
-        if teacherSalary.is_valid():
-            teacher=TMODEL.Teacher.objects.get(id=pk)
-            teacher.salary=teacherSalary.cleaned_data['salary']
-            teacher.status=True
-            teacher.save()
-        else:
-            print("form is invalid")
-        return HttpResponseRedirect('/admin-view-pending-teacher')
-    return render(request,'exam/salary_form.html',{'teacherSalary':teacherSalary})
+    import pdb; pdb.set_trace()
+    teacher = TMODEL.Teacher.objects.get(id=pk)
+    teacher.status = True
+    teacher.save()
+    teachers = TMODEL.Teacher.objects.all().filter(status=False)
+    return render(request, 'exam/admin_view_pending_teacher.html', {'teachers': teachers})
 
 @login_required(login_url='adminlogin')
 def reject_teacher_view(request,pk):
@@ -214,14 +204,27 @@ def delete_student_view(request,pk):
 def admin_course_view(request):
     return render(request,'exam/admin_course.html')
 
+@login_required(login_url='adminlogin')
+def admin_dept_view(request):
+    return render(request,'exam/admin_department.html')
+
+@login_required(login_url='adminlogin')
+def admin_cwt_view(request):
+    return render(request,'exam/admin_cwt.html')
+
+
 
 @login_required(login_url='adminlogin')
 def admin_add_course_view(request):
-    courseForm=forms.CourseForm()
+    courseForm=forms.QCourseForm()
     if request.method=='POST':
-        courseForm=forms.CourseForm(request.POST)
-        if courseForm.is_valid():        
-            courseForm.save()
+        courseForm=forms.QCourseForm(request.POST)
+        if courseForm.is_valid():
+            course = courseForm.save(commit=False)
+            department = QMODEL.Department.objects.get(id=request.POST.get('dept_id'))
+            course.course_dept = department
+            course.course_dept_name = department.dept_name
+            course.save()
         else:
             print("form is invalid")
         return HttpResponseRedirect('/admin-view-course')
@@ -229,17 +232,79 @@ def admin_add_course_view(request):
 
 
 @login_required(login_url='adminlogin')
+def admin_add_dept_view(request):
+    DeptForm=forms.DeptForm()
+    if request.method=='POST':
+        DeptForm=forms.DeptForm(request.POST)
+        if DeptForm.is_valid():
+            DeptForm.save()
+        else:
+            print("form is invalid")
+        return HttpResponseRedirect('/admin-view-dept')
+    return render(request,'exam/admin_add_dept.html',{'courseForm':DeptForm})
+
+
+@login_required(login_url='adminlogin')
+def admin_add_cwt_view(request):
+    CWTForm=forms.CWTForm()
+    if request.method=='POST':
+        CWTForm=forms.CWTForm(request.POST)
+        if CWTForm.is_valid():
+            CWT = CWTForm.save(commit=False)
+            course = QMODEL.QCourse.objects.get(id=request.POST.get('course_id'))
+            teacher = TMODEL.Teacher.objects.get(id=request.POST.get('teacher_id'))
+            CWT.course = course
+            CWT.teacher = teacher
+            CWT.save()
+        else:
+            print("form is invalid")
+        return HttpResponseRedirect('/admin-view-cwt')
+    return render(request,'exam/admin_add_cwt.html',{'courseForm':CWTForm})
+
+
+
+@login_required(login_url='adminlogin')
 def admin_view_course_view(request):
-    courses = models.Course.objects.all()
+    courses = models.QCourse.objects.all()
     return render(request,'exam/admin_view_course.html',{'courses':courses})
+
+
+@login_required(login_url='adminlogin')
+def admin_view_dept_view(request):
+    courses = models.Department.objects.all()
+    return render(request,'exam/admin_view_dept.html',{'courses':courses})
+
+@login_required(login_url='adminlogin')
+def admin_view_cwt_view(request):
+    courses = models.CourseWiseTeacher.objects.all()
+    mydict = []
+    for i in courses:
+        course_dict = i.__dict__
+        course = models.QCourse.objects.filter(id = course_dict.get('course_id')).values_list('course_name', 'course_code')
+        course_dict.update({'course_name':course[0][0],'teacher_name':i.teacher})
+        mydict.append(course_dict)
+    return render(request,'exam/admin_view_cwt.html',{'courses':mydict})
 
 @login_required(login_url='adminlogin')
 def delete_course_view(request,pk):
-    course=models.Course.objects.get(id=pk)
+    course=models.QCourse.objects.get(id=pk)
     course.delete()
     return HttpResponseRedirect('/admin-view-course')
 
 
+
+
+@login_required(login_url='adminlogin')
+def delete_dept_view(request,pk):
+    dept=models.Department.objects.get(id=pk)
+    dept.delete()
+    return HttpResponseRedirect('/admin-view-dept')
+
+@login_required(login_url='adminlogin')
+def delete_cwt_view(request,pk):
+    cwt=models.CourseWiseTeacher.objects.get(id=pk)
+    cwt.delete()
+    return HttpResponseRedirect('/admin-view-cwt')
 
 @login_required(login_url='adminlogin')
 def admin_question_view(request):

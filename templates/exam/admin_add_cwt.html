@@ -19,22 +19,18 @@
   </style>
 </head>
 
-<h2 style="text-align:center;">Add Course</h2>
+<h2 style="text-align:center;">Add Department</h2>
 <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
     {%csrf_token%}
     <div class="form-group">
-      <label for="course_name">Department Name</label>
-      {% render_field courseForm.dept_id class="form-control" placeholder="Select Department" %}
-
-      <label for="question_number">Course Name</label>
-            {% render_field courseForm.course_name class="form-control" placeholder="Example: Software Engineering" %}
-
-      <label for="total_marks">Course Code</label>
-      {% render_field courseForm.course_code class="form-control" placeholder="" %}
+      <label for="course_name">Course Name</label>
+      {% render_field courseForm.course_id class="form-control" placeholder="Select Department" %}
+        <label for="course_name">Teacher Name</label>
+      {% render_field courseForm.teacher_id class="form-control" placeholder="Select Department" %}
     </div>
     
 
-    <button type="submit" class="btn btn-success" style="border-radius:0px;">Add Course Inf  o</button>
+    <button type="submit" class="btn btn-success" style="border-radius:0px;">Add Course Wise Teacher</button>
   </form>
 <br><br><br>
 {% endblock content %}

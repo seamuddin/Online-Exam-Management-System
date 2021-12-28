@@ -42,9 +42,17 @@ urlpatterns = [
     path('delete-student/<int:pk>', views.delete_student_view,name='delete-student'),
 
     path('admin-course', views.admin_course_view,name='admin-course'),
+    path('admin-department', views.admin_dept_view,name='admin-dept'),
+    path('admin-cwt', views.admin_cwt_view,name='admin-cwt'),
     path('admin-add-course', views.admin_add_course_view,name='admin-add-course'),
+    path('admin-add-dept', views.admin_add_dept_view,name='admin-add-course'),
+    path('admin-add-cwt', views.admin_add_cwt_view,name='admin-add-course'),
     path('admin-view-course', views.admin_view_course_view,name='admin-view-course'),
+    path('admin-view-dept', views.admin_view_dept_view,name='admin-view-course'),
+    path('admin-view-cwt', views.admin_view_cwt_view,name='admin-view-course'),
     path('delete-course/<int:pk>', views.delete_course_view,name='delete-course'),
+    path('delete-cwt/<int:pk>', views.delete_cwt_view,name='delete-cwt'),
+    path('delete-dept/<int:pk>', views.delete_dept_view,name='delete-dept'),
 
     path('admin-question', views.admin_question_view,name='admin-question'),
     path('admin-add-question', views.admin_add_question_view,name='admin-add-question'),

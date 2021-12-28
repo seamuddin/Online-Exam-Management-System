@@ -75,8 +75,8 @@ def is_teacher(user):
 def teacher_dashboard_view(request):
     dict={
     
-    'total_course':QMODEL.Course.objects.all().count(),
-    'total_question':QMODEL.Question.objects.all().count(),
+    'total_course':QMODEL.QCourse.objects.all().count(),
+    'total_exam':QMODEL.Course.objects.all().count(),
     'total_student':SMODEL.Student.objects.all().count()
     }
     return render(request,'teacher/teacher_dashboard.html',context=dict)
