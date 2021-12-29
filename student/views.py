@@ -51,7 +51,8 @@ def student_dashboard_view(request):
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)
 def student_exam_view(request):
-    courses=QMODEL.Course.objects.all()
+    course_id = request.GET.get('course')
+    courses=QMODEL.Course.objects.all().filter(exam_course=int(course_id))
     return render(request,'student/student_exam.html',{'courses':courses})
 
 @login_required(login_url='studentlogin')
@@ -128,15 +129,29 @@ def start_exam_view(request,pk):
 
 
     else:
+        from datetime import datetime
         course = QMODEL.Course.objects.get(id=pk)
         questions = QMODEL.Question.objects.all().filter(course=course)
         student = models.Student.objects.get(user_id=request.user.id)
         attendexam = QMODEL.Examattend.objects.all().filter(student=student,course=course).first()
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        if course.start_time < dt_string:
+            time = course.end_time - course.end_time
+            response = render(request, 'exam/test.html',
+                              {'course': course, 'questions': questions, 'status': attendexam})
+            response.set_cookie('course_id', course.id)
+            return response
 
-        response = render(request, 'exam/test.html', {'course': course, 'questions': questions, 'status':attendexam})
-        response.set_cookie('course_id', course.id)
+        else:
+            return HttpResponseRedirect('/student/student-dashboard')
 
-    return response
+
+
+
+
+
+
 
 
 
@@ -187,4 +202,10 @@ def check_marks_view(request,pk):
 def student_marks_view(request):
     courses=QMODEL.Course.objects.all()
     return render(request,'student/student_marks.html',{'courses':courses})
-  
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_course_view(request):
+    student = models.Student.objects.get(user_id=request.user.id)
+    CWS = QMODEL.CourseWiseStudent.objects.all().filter(student=student.id)
+    return render(request,'student/student_course_view.html',{'cws':CWS})

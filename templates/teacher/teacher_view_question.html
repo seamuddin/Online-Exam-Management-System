@@ -31,7 +31,9 @@
       <thead>
         <tr>
 
-          <th>Course</th>
+          <th>Exam Name</th>
+          <th>Exam Type</th>
+
           <th>Total Question</th>
           <th>Total Marks</th>
           <th>Action</th>
@@ -41,6 +43,7 @@
       <tr>
 
         <td> {{c.course_name}}</td>
+        <td> {% if c.exam_type == '0' %} Class Test {% elif c.exam_type == '1' %} Mid Term  {% else %} Final Exam {% endif %}</td>
         <td>{{c.question_number}}</td>
         <td>{{c.total_marks}}</td>
         <td><a class="btn btn-primary btn-sm" style="border-radius: 0%;" href="{% url 'see-question' c.id  %}"><span class="glyphicon glyphicon-eye-open"></span> View Question</a></td>

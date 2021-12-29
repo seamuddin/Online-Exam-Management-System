@@ -18,28 +18,16 @@
     
   </style>
 </head>
-<h2 style="text-align:center; ">Add Exam Info</h2>
+<h2 style="text-align:center; ">Add Student</h2>
 <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
     {%csrf_token%}
     <div class="form-group">
-        <label for="course_name">Exam Type</label>
-      {% render_field courseForm.exam_type class="form-control" placeholder="Example: Databases" %}
-      <label for="course_name">Exam Name</label>
-      {% render_field courseForm.course_name class="form-control" placeholder="Example: Databases" %}
-
-      <label for="question_number">Total Question</label>
-      {% render_field courseForm.question_number class="form-control" placeholder="Example: 10" %}
-
-      <label for="total_marks">Total Marks</label>
-      {% render_field courseForm.total_marks class="form-control" placeholder="Example: 100" %}
-         <label for="total_marks">Start Time</label>
-       <input type="datetime-local" name="start_time" class="form-control">
-        <label for="total_marks">Start Time</label>
-       <input type="datetime-local"  name="end_time" class="form-control">
+        <label for="course_name">Student Name</label>
+      {% render_field courseForm.student_id class="form-control" placeholder="Select Department" %}
     </div>
-    
 
-    <button type="submit" class="btn btn-success" style="border-radius: 0%;">Submit Info</button>
+
+    <button type="submit" class="btn btn-success" style="border-radius:0px;">Add Course Wise Student</button>
   </form>
 <br><br><br>
 {% endblock content %}

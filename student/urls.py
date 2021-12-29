@@ -15,4 +15,5 @@ path('calculate-marks', views.calculate_marks_view,name='calculate-marks'),
 path('view-result', views.view_result_view,name='view-result'),
 path('check-marks/<int:pk>', views.check_marks_view,name='check-marks'),
 path('student-marks', views.student_marks_view,name='student-marks'),
+path('student-course', views.student_course_view,name='student-course'),
 ]

@@ -1,4 +1,4 @@
-{% extends 'teacher/teacherbase.html' %}
+{% extends 'student/studentbase.html' %}
 {% load widget_tweaks %}
 {% block content %}
 
@@ -73,7 +73,7 @@
   <div class="container">
     <div class="row">
 
-        {% for i in context %}
+        {% for i in cws %}
       <div class="col-md-3 col-xl-5 border  p-4 m-3">
         <div class="card text-white bg-info order-card mb-0">
           <div class="card-block">
@@ -82,22 +82,21 @@
 
           </div>
         </div>
-          <a class="btn btn-primary m-2 p-2" href="{% url 'teacher-add-exam' i.course_id %}">   Add Exam &nbsp; <i class="fas fa-plus f-right"></i></a>
-          <a class="btn btn-primary m-2 p-2" href="{% url 'teacher-add-cws' i.course_id %}">   Add Student &nbsp; <i class="fas fa-plus f-right"></i></a>
+          <a class="btn btn-primary m-2 p-2" href="{% url 'student-exam' %}?course={{ i.course_id }}">  View Exam &nbsp; <i class="fas fa-plus f-right"></i></a>
       </div>
   {% endfor %}
 
-      <div class="col-md-4 col-xl-6 m-5">
-        <a href="teacher-view-exam" style="text-decoration: none;color:white;">
-        <div class="card bg-c-yellow order-card">
-          <div class="card-block">
-            <h6 class="m-b-20">View Exam </h6>
-            <h2 class="text-right"><i class="fas fa-eye f-left"></i></h2>
-          </div>
-        </div>
-      </a>
-      </div>
-     
+{#      <div class="col-md-4 col-xl-6 m-5">#}
+{#        <a href="teacher-view-exam" style="text-decoration: none;color:white;">#}
+{#        <div class="card bg-c-yellow order-card">#}
+{#          <div class="card-block">#}
+{#            <h6 class="m-b-20">View Exam </h6>#}
+{#            <h2 class="text-right"><i class="fas fa-eye f-left"></i></h2>#}
+{#          </div>#}
+{#        </div>#}
+{#      </a>#}
+{#      </div>#}
+{#     #}
     </div>
   </div>
 

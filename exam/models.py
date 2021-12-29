@@ -1,12 +1,18 @@
 from django.db import models
 from teacher import models as TMODEL
 from student.models import Student
+import datetime
+
 class Course(models.Model):
-   course_name = models.CharField(max_length=50)
-   exam_type = models.CharField(max_length=50, default=0)
-   question_number = models.PositiveIntegerField()
-   total_marks = models.PositiveIntegerField()
-   def __str__(self):
+    exam_course = models.CharField(max_length=50, default=0)
+    course_name = models.CharField(max_length=50)
+    exam_type = models.CharField(max_length=50, default=0)
+    question_number = models.PositiveIntegerField()
+    total_marks = models.PositiveIntegerField()
+    start_time = models.CharField(max_length=100,default='0')
+    end_time = models.CharField(max_length=100,default='0')
+    created_by = models.CharField(max_length=40, default='0')
+    def __str__(self):
         return self.course_name
 
 class Department(models.Model):
@@ -27,6 +33,10 @@ class QCourse(models.Model):
 class CourseWiseTeacher(models.Model):
     course = models.ForeignKey(QCourse, on_delete=models.CASCADE)
     teacher = models.ForeignKey(TMODEL.Teacher, on_delete=models.CASCADE, null=True)
+
+class CourseWiseStudent(models.Model):
+    course = models.ForeignKey(QCourse, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
 
 
 class Question(models.Model):

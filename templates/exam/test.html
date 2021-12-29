@@ -14,6 +14,8 @@
             {{ status.status }}
 
         <div class="jumbotron my-4">
+         <div class="text-center">Exam will close in <span id="time">05:00</span> minutes!</div>
+        {{ course.start_time }}
 
 
 
@@ -74,6 +76,42 @@
             </form>
           </div>
 
+
+
+<script>
+
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+
+{#var datestring = '{{ course.end_time }}';#}
+{#let result = datestring.replace("T", " ");#}
+{#var dateTime = convertToDateTime(result, "yyyy.MM.dd HH:mm");#}
+
+window.onload = function () {
+    var fiveMinutes = 60 * 5,
+        display = document.querySelector('#time');
+    startTimer(fiveMinutes, display);
+};
+
+
+
+</script>
+
   {% else %}
 
 
@@ -86,12 +124,6 @@
 
 
 
-
-<script>
-
-
-
-</script>
 
 <br><br><br><br><br><br>
 {% endblock content %}

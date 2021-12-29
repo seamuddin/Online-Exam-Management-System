@@ -41,6 +41,13 @@ class CWTForm(forms.ModelForm):
         model=models.CourseWiseTeacher
         fields=['course_id']
 
+class CWSForm(forms.ModelForm):
+    student_id = forms.ModelChoiceField(queryset=models.Student.objects.all(), empty_label="Student Name", to_field_name="id")
+    class Meta:
+        model=models.CourseWiseStudent
+        fields=['student_id']
+
+
 
 DEMO_CHOICES =(
     ("0", "MCQ"),

@@ -1,4 +1,4 @@
-{% extends 'student/studentbase.html' %}
+{% extends 'teacher/teacherbase.html' %}
 {% block content %}
 {%load static%}
 
@@ -25,29 +25,24 @@
 <div class="container">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h6 class="panel-title">Available Exam</h6>
+      <h6 class="panel-title">Course Wise Student</h6>
     </div>
     <table class="table table-hover table-bordered" id="dev-table">
       <thead>
         <tr>
 
-          <th>Exam Name</th>
-          <th>Exam Type</th>
-          <th>Start time</th>
-          <th>End time</th>
-
+          <th>Course</th>
+          <th>Student Name</th>
           <th>Action</th>
         </tr>
       </thead>
       {% for t in courses %}
       <tr>
 
-        <td> {{t.course_name}}</td>
-          <td> {% if t.exam_type == '0' %} Class Test {% elif t.exam_type == '1' %} Mid Term  {% else %} Final Exam {% endif %}</td>
-      <td> {{t.start_time}}</td>
-      <td> {{t.end_time}}</td>
-
-        <td><a class="btn btn-success btn-sm" style="border-radius:0px;" href="{% url 'take-exam' t.id  %}"><span class="glyphicon glyphicon-check"></span> Attend Exam</a></td>
+        <td> {{t.course}}</td>
+        <td> {{t.student}}</td>
+        
+        <td><a class="btn btn-danger btn-xs" style="border-radius: 0%;" href="{% url 'delete-cws' %}?cws_name={{t.id}}&course={{t.course_id}}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>
       {% endfor %}
     </table>

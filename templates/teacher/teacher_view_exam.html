@@ -32,6 +32,10 @@
         <tr>
 
           <th>Exam</th>
+          <th>Exam Type</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+
           <th>Total Question</th>
           <th>Total Marks</th>
           <th>Action</th>
@@ -41,6 +45,9 @@
       <tr>
 
         <td> {{t.course_name}}</td>
+          <td> {% if t.exam_type == '0' %} Class Test {% elif t.exam_type == '1' %} Mid Term  {% else %} Final Exam {% endif %}</td>
+        <td>{{t.start_time}}</td>
+        <td>{{t.end_time}}</td>
         <td>{{t.question_number}}</td>
         <td>{{t.total_marks}}</td>
         

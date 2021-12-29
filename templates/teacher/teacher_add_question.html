@@ -23,7 +23,7 @@ p
 <form method="POST" autocomplete="off" style="margin:100px;margin-top: 0px;">
     {%csrf_token%}
     <div class="form-group">
-        <label for="question">Course</label>
+        <label for="question">Exam</label>
 
       {% render_field questionForm.courseID|attr:'required:true' class="form-control"  %}
         <br>
