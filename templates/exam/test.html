@@ -14,7 +14,7 @@
             {{ status.status }}
 
         <div class="jumbotron my-4">
-         <div class="text-center">Exam will close in <span id="time">05:00</span> minutes!</div>
+         <div class="text-center">Exam will close in <span id="time"></span> minutes!</div>
         {{ course.start_time }}
 
 
@@ -93,6 +93,7 @@ function startTimer(duration, display) {
         display.textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
+            location.reload();
             timer = duration;
         }
     }, 1000);
@@ -103,7 +104,7 @@ function startTimer(duration, display) {
 {#var dateTime = convertToDateTime(result, "yyyy.MM.dd HH:mm");#}
 
 window.onload = function () {
-    var fiveMinutes = 60 * 5,
+    var fiveMinutes = 60 * {{ time }},
         display = document.querySelector('#time');
     startTimer(fiveMinutes, display);
 };

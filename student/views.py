@@ -135,11 +135,17 @@ def start_exam_view(request,pk):
         student = models.Student.objects.get(user_id=request.user.id)
         attendexam = QMODEL.Examattend.objects.all().filter(student=student,course=course).first()
         now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        if course.start_time < dt_string:
-            time = course.end_time - course.end_time
+        dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
+        if course.start_time < dt_string and course.end_time > dt_string:
+            datetimeobj = datetime.strptime(course.end_time, "%Y-%m-%d %H:%M:%S")
+            datetimeobj1 = datetime.strptime(dt_string, "%Y-%m-%d %H:%M:%S")
+            print(datetimeobj1)
+            time = datetimeobj - datetimeobj1
+            print(time)
+            time = time.total_seconds()/60
+
             response = render(request, 'exam/test.html',
-                              {'course': course, 'questions': questions, 'status': attendexam})
+                              {'course': course, 'questions': questions, 'status': attendexam, 'time':time})
             response.set_cookie('course_id', course.id)
             return response
 
