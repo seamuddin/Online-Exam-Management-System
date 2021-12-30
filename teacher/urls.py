@@ -21,6 +21,6 @@ path('teacher-add-question', views.teacher_add_question_view,name='teacher-add-q
 path('teacher-view-question', views.teacher_view_question_view,name='teacher-view-question'),
 path('see-question/<int:pk>', views.see_question_view,name='see-question'),
 path('see-answer/<int:pk>', views.see_answer_view,name='see-answer'),
-path('view_answer_mark/<int:pk>', views.view_answer_mark_view,name='view_answer_mark'),
+path('view_answer_mark', views.view_answer_mark_view,name='view_answer_mark'),
 path('remove-question/<int:pk>', views.remove_question_view,name='remove-question'),
 ]

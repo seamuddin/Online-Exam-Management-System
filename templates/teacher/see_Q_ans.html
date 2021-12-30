@@ -27,6 +27,7 @@
     <div class="panel-heading">
       <h6 class="panel-title">Available Questions</h6>
     </div>
+      <form action="" method="post">
     <table class="table table-hover table-bordered" id="dev-table">
       <thead>
         <tr>
@@ -34,7 +35,9 @@
           <th>Question</th>
          
           <th>Answer</th>
-          <th>Action</th>
+          <th>Mark</th>
+          <th>Status</th>
+
         </tr>
       </thead>
       {% for c in context %}
@@ -47,11 +50,14 @@
           {% else %}
          {{c.answer}}
           {% endif %}</td>
-        <td><a class="btn btn-danger btn-xs" style="border-radius: 0%;" href="{% url 'view_answer_mark' c.student_id %}">View Answer</a></td>
-        
+        <td><input type="text" name="{{ c.id }}"></td>
+          <td>{% if c.status == '0' %} <p class="danger">Marked & mark = {{ c.marks }}</p>{% else %} <p class="success">Unmarked </p>{% endif %}</p></td>
+
       </tr>
       {% endfor %}
     </table>
+   <button type="submit" class="btn btn-success" style="border-radius: 0%; margin: 10px; float: right">Submit Mark</button>
+      </form>
   </div>
 </div>
 

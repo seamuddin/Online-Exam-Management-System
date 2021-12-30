@@ -217,8 +217,38 @@ def see_answer_view(request,pk):
 
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
-def view_answer_mark_view(request,pk):
-    qans_info=QMODEL.QuestionAns.objects.all().filter(student_id=pk)
+def view_answer_mark_view(request):
+    if request.POST:
+        data_dict = dict(request.POST)
+        new_list = []
+        k =0
+        for i in data_dict.keys():
+            new_list.append(i)
+        for j in data_dict:
+            print(j)
+            qans_info1 = QMODEL.QuestionAns.objects.get(id=j)
+            mark = data_dict.get(j)[0]
+            if mark == '':
+                mark = 0
+            k = k+int(mark)
+            qans_info1.marks = int(mark)
+            qans_info1.status = 0
+            qans_info1.save()
+
+        student = request.GET.get('student')
+        course = request.GET.get('course')
+        model1 = QMODEL.Result()
+        model1.marks = k
+        smodel = SMODEL.Student.objects.get(id=student)
+        cmodel = QMODEL.Course.objects.get(id=course)
+        model1.student = smodel
+        model1.exam = cmodel
+        model1.save()
+
+
+
+    id = request.GET.get('student')
+    qans_info=QMODEL.QuestionAns.objects.all().filter(student_id=int(id))
     return render(request,'teacher/see_Q_ans.html',{'context':qans_info})
 
 

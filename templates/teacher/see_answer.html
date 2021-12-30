@@ -37,13 +37,14 @@
           <th>Action</th>
         </tr>
       </thead>
+
       {% for c in context %}
       <tr>
 
         <td> {{c.student}}</td>
         
         <td>{{c.course}}</td>
-        <td><a class="btn btn-danger btn-xs" style="border-radius: 0%;" href="{% url 'view_answer_mark' c.student_id %}">View Answer</a></td>
+        <td><a class="btn btn-danger btn-xs" style="border-radius: 0%;" href="{% url 'view_answer_mark' %}?student={{ c.student_id }}&course={{ c.course_id }}">View Answer</a></td>
         
       </tr>
       {% endfor %}

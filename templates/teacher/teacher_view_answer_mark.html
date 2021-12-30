@@ -40,7 +40,7 @@
           <th>Action</th>
         </tr>
       </thead>
-        <form action="POST">
+
       {% for c in courses %}
       <tr>
 
@@ -48,12 +48,11 @@
         <td> {% if c.exam_type == '0' %} Class Test {% elif c.exam_type == '1' %} Mid Term  {% else %} Final Exam {% endif %}</td>
         <td>{{c.question_number}}</td>
         <td>{{c.total_marks}}</td>
-        <td></td>
+        <td><a class="btn btn-primary btn-sm" style="border-radius: 0%" href="{% url 'see-answer' c.id  %}"><span class="glyphicon glyphicon-eye-open"></span> View Answer List</a></td>
 
       </tr>
       {% endfor %}
-        <button type="submit" class="btn btn-success" style="border-radius: 0%;">Submit Mark</button>
-        </form>
+
     </table>
   </div>
 </div>
