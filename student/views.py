@@ -136,7 +136,7 @@ def start_exam_view(request,pk):
         attendexam = QMODEL.Examattend.objects.all().filter(student=student,course=course).first()
         now = datetime.now()
         dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
-        if course.start_time < dt_string and course.end_time > dt_string:
+        if course.start_time < dt_string < course.end_time:
             datetimeobj = datetime.strptime(course.end_time, "%Y-%m-%d %H:%M:%S")
             datetimeobj1 = datetime.strptime(dt_string, "%Y-%m-%d %H:%M:%S")
             print(datetimeobj1)

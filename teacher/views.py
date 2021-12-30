@@ -165,6 +165,14 @@ def delete_cws_view(request):
 def teacher_question_view(request):
     return render(request,'teacher/teacher_question.html')
 
+
+@login_required(login_url='teacherlogin')
+@user_passes_test(is_teacher)
+def teacher_view_question_mark_view(request):
+    courses= QMODEL.Course.objects.all().filter(created_by=request.user.id)
+    return render(request,'teacher/teacher_view_answer_mark.html',{'courses':courses})
+
+
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_add_question_view(request):
@@ -177,6 +185,8 @@ def teacher_add_question_view(request):
             question=questionForm.save(commit=False)
             course=QMODEL.Course.objects.get(id=request.POST.get('courseID'))
             question.course=course
+            teacher = models.Teacher.objects.get(user_id=request.user.id)
+            question.created_by = teacher.id
             questiontype = request.POST.get('questiont')
             question.questiontype=questiontype
             question.save()
@@ -188,7 +198,7 @@ def teacher_add_question_view(request):
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_view_question_view(request):
-    courses= QMODEL.Course.objects.all()
+    courses= QMODEL.Course.objects.all().filter(created_by=request.user.id)
     return render(request,'teacher/teacher_view_question.html',{'courses':courses})
 
 @login_required(login_url='teacherlogin')
@@ -196,6 +206,21 @@ def teacher_view_question_view(request):
 def see_question_view(request,pk):
     questions=QMODEL.Question.objects.all().filter(course_id=pk)
     return render(request,'teacher/see_question.html',{'questions':questions})
+
+@login_required(login_url='teacherlogin')
+@user_passes_test(is_teacher)
+def see_answer_view(request,pk):
+    attend_info=QMODEL.Examattend.objects.all().filter(course_id=pk)
+    print(attend_info)
+    return render(request,'teacher/see_answer.html',{'context':attend_info})
+
+
+@login_required(login_url='teacherlogin')
+@user_passes_test(is_teacher)
+def view_answer_mark_view(request,pk):
+    qans_info=QMODEL.QuestionAns.objects.all().filter(student_id=pk)
+    return render(request,'teacher/see_Q_ans.html',{'context':qans_info})
+
 
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
