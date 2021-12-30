@@ -245,10 +245,10 @@ def view_answer_mark_view(request):
         model1.exam = cmodel
         model1.save()
 
-
-
+    course = request.GET.get('course')
+    cmodel = QMODEL.Course.objects.get(id=course)
     id = request.GET.get('student')
-    qans_info=QMODEL.QuestionAns.objects.all().filter(student_id=int(id))
+    qans_info=QMODEL.QuestionAns.objects.all().filter(student_id=int(id), course_id=cmodel.id)
     return render(request,'teacher/see_Q_ans.html',{'context':qans_info})
 
 

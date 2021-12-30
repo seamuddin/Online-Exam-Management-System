@@ -36,7 +36,7 @@
          
           <th>Answer</th>
           <th>Mark</th>
-          <th>Status</th>
+
 
         </tr>
       </thead>
@@ -50,13 +50,21 @@
           {% else %}
          {{c.answer}}
           {% endif %}</td>
-        <td><input type="text" name="{{ c.id }}"></td>
-          <td>{% if c.status == '0' %} <p class="danger">Marked & mark = {{ c.marks }}</p>{% else %} <p class="success">Unmarked </p>{% endif %}</p></td>
+        <td> {% if c.status == '1' %} <input type="text" name="{{ c.id }}"> {% else %}Marked & mark = {{ c.marks }} {% endif %}</td>
+
+
+
 
       </tr>
+     {% if c.status == '1' %}
+          {% if forloop.last %}
+
+          <tr><button type="submit" class="btn btn-success" style="border-radius: 0%; margin: 10px; float: right">Submit Mark</button></tr>
+                  {% endif %}
+          {% endif %}
       {% endfor %}
     </table>
-   <button type="submit" class="btn btn-success" style="border-radius: 0%; margin: 10px; float: right">Submit Mark</button>
+
       </form>
   </div>
 </div>
