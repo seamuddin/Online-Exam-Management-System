@@ -21,9 +21,9 @@
 
           <form class="form" autocomplete="off" onsubmit="return saveAns()" method="post" enctype="multipart/form-data">
             <h1 style="display: none">{% csrf_token %}</h1>
-            <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
+            <h2 style="text-align: center;" >Course: {{course.course_name}}</h2>
             {% for q in questions%}
-            <h3 class="text-danger">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
+            <h3 class="text-danger disable-text-selection">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
 
 
 
